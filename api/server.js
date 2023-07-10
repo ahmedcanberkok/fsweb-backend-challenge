@@ -19,7 +19,10 @@ server.get ('/', (req,res) => {
 
 //ERROR MİDDLEWARE
 
-
+server.use((err,req,res,next) => {
+    res.status(err.status || 500)
+    .json({message: err.message || 'Server error!...'})
+})
 
 //EXPORTS
 module.exports = server ;
