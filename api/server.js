@@ -5,11 +5,15 @@ require('dotenv').config();
 const helmet = require('helmet'); 
 const cors = require('cors');
 const morgan = require('morgan');
+const {resricted} = require('./Auth/auth-middleware');
 
 //GLOBAL MİDDLEWARE
-server.use(helmet());
+//3rd-party middleware
+
+server.use(helmet());  
 server.use(cors());
 server.use(morgan('dev')); // LOG atar
+server.use(express.json());
 
 // ROUTERS
 server.get ('/', (req,res) => {
