@@ -1,0 +1,41 @@
+const router = require('express').Router();
+const User = require('../Users/users-model');
+
+
+router.post('/register', async (req,res,next) => {
+    try {
+        const payload = req.body;
+        const newUser = await User.create(payload);
+        if (newUser) {
+            res.status(201).json({message: `Welcome ${payload.username}...`})
+        } else {
+            next({status:400, message : "Create User ERROR..."})
+        }
+    } catch (error) {
+        next(error);
+    }
+   //register endpointi çalışıyor
+});
+
+router.post('/login', async (req,res,next) => {
+    try {
+        const payload = req.body;
+        const registeredUSer = await User.getByFilter({email});
+        if (registeredUSer && registeredUSer.password === password) {
+            res.status(200).json({message: `Welcome ${payload.username}...`})
+        } else {
+            next({status:401, message : "invalid credentials..."})
+        }
+    } catch (error) {
+        next(error);
+    }
+  
+});
+router.post('/password/reset', (req,res,next) => {
+
+});
+// router.get('/logout', (req,res,next) => {
+
+// });
+
+module.exports= router ;
