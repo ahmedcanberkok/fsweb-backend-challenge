@@ -3,8 +3,10 @@ const db = require('../../data/db-config');
 //Kullanıcıları veritabanından al.
 const getAll = async () => {
     const AllUsers = await db('Users as u')
-        .join('Roles', 'u.role_id', 'r.id')
-        .select('*')
+        .select('u.user_id',
+                'u.username',
+                'u.email'
+        )
     return AllUsers;
 };
 
@@ -45,17 +47,17 @@ const getByFilter = async (filter) => {
     return filterByUser;
 }
 // Kullanıcı sil.
-const remove = async (id) => {
-    const deletedUsers = await db('Users')
-        .where('user_id', id)
-        .delete()
+const remove =  (id) => {
+    return  db('Users')
+        .where("user_id" ,id)
+        .del()
 
-    return deletedUsers;
+     
 }
 //Yeni bir kullanıcıyı oluştur.
 const create = async (user) => {
     const [id] = await db('Users').insert(user);
-    return getById(id);
+    return await getById(id);
 }
 
 // Kullanıcıyı güncelle

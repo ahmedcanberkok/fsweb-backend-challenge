@@ -7,6 +7,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const {resricted} = require('./Auth/auth-middleware');
 const userRouter = require('./Users/users-router');
+const authRouter = require('./Auth/auth-router');
 //GLOBAL MİDDLEWARE
 //3rd-party middleware
 
@@ -20,7 +21,7 @@ server.get ('/', (req,res) => {
     res.json({message: "Server up and running..."})
 })
 server.use('/api/users',userRouter);
-
+server.use('/api/auth',authRouter);
 //ERROR MİDDLEWARE
 
 server.use((err,req,res,next) => {

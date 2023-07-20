@@ -1,33 +1,37 @@
 const router = require('express').Router();
+
 const User = require('./users-model');
 router.get('/', async (req,res,next) => {
     try {
         const users= await User.getAll();
         res.json(users);    
     } catch (error) {
+        next(error);
        res.status(500).json({message: 'Kullanicilari getirirken oluşan hata.'})
     }
     
 })
 router.get('/:id', async (req,res,next) => {
- const userId = await req.params.id;
+ const userId = req.params.id;
     try {
     const user = await User.getById(userId)
     if (user) {
         res.json(user)
     } else {
     res.status(404).json({message:'Kullanici bulunamadi'});        
+    
     }
     } catch (error) {
     res.status(500).json({message: 'Kullaniciyi getirirken hata oluştu.'})
     }
 })
-router.delete('/:id',async (req,res,next) => {
-    const {id} = req.params;
+router.delete('/:id',async (req,res) => {
+    
     try {
+    const {id} = req.params;
     const deleted = await User.remove(id) ; 
     if (deleted) {
-    res.json( { message: `User id ${id}, silindi.`})        
+    res.json( { message: `User id ${id}, basari ile silindi.`})        
     } else {
     res.status(400).json ({message: `deleting error for id ${id}...` }) 
     }
@@ -40,8 +44,9 @@ router.delete('/:id',async (req,res,next) => {
 router.put('/:id',async (req,res,next) => {
     const {id} = req.params;
     try {
+       
         const updated = await User.update(id) ; 
-        if (deleted) {
+        if (updated) {
             res.json( { message: `User id ${id}, guncellendi.`})        
             } else {
             res.status(400).json ({message: `update error for id ${id}...` }) 
@@ -50,4 +55,23 @@ router.put('/:id',async (req,res,next) => {
             res.status(500).json({message: 'Kullanici guncellenirken hata oluştu(UPDATE_ERROR)'})
             }
 })
+
+router.post("/", async (req, res, next) => {
+    try {
+      const { username, password, email } = req.body;
+      if (!username) {
+        return res.status(400).json({ message: "Username is required" });
+      }
+      if (!password) {
+        return res.status(400).json({ message: "Password is required" });
+      }
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      const newUser = await User.create(req.body);
+      res.status(201).json(newUser);
+    } catch (err) {
+      next(err);
+    }
+  });
 module.exports = router ;
