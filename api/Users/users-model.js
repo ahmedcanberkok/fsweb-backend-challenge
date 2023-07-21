@@ -13,13 +13,13 @@ const getAll = async () => {
 // Kullanıcıları ID'ye göre al.
 const getById = async (id) => {
     const users = await db('Users as u')
-        .join('Roles as r', 'u.role_id', 'r.id')
+     
         .select(
             'u.user_id',
             'u.email',
             'u.password',
             'u.username',
-            'r.role_name as role_name'
+        
         )
         .where('u.user_id', id)
         .first() // {...} => Obj dönecek
@@ -28,24 +28,20 @@ const getById = async (id) => {
 
 // E-maile göre bir kullanıcıyı veritabanından al
 const getByEmail = async (email) =>{
-    const mail = await db('Users')
-        .join('Roles as r', 'u.role_id', 'r.id')
+    const mail = await db('Users as u')
         .where(email)
+        .select('u.user_id','username','email','password')
         .first()
-        .select('user_id','username','email','password','r.id as role_id')
-        
         return mail ;
 }
 const getByFilter = async (filter) => {
     const filterByUser = await db('Users as u')
-        .join('Roles', 'u.role_id', 'r.id')
         .where(filter)
         .select(
             'u.user_id',
             'email',
             'password',
             'username',
-            'r.role_name'
         )
     return filterByUser;
 }

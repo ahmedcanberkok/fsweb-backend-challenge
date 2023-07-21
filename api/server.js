@@ -20,7 +20,7 @@ server.use(express.json());
 server.get ('/', (req,res) => {
     res.json({message: "Server up and running..."})
 })
-server.use('/api/users',userRouter);
+server.use('/api/users',resricted,userRouter);
 server.use('/api/auth',authRouter);
 //ERROR MİDDLEWARE
 

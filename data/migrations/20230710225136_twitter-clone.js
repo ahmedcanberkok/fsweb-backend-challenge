@@ -4,13 +4,6 @@
  */
 exports.up = function (knex) {
     return knex.schema
-        .createTable("Roles", function rolesTable(table) {
-            table.increments("id").primary;
-            table.string('role_name', 32)
-                .notNullable()
-                .unique();
-
-        })
         .createTable("Users", function usersTable(table) {
             table.increments("user_id").primary();
             table.string("username", 50)
@@ -20,13 +13,6 @@ exports.up = function (knex) {
                 .unique();
             table.string("password")
                 .notNullable();
-            table.integer("role_id") //Foreign Key
-                .notNullable()
-                .defaultTo(2)
-                .references('id')
-                .inTable('Roles')
-                .onUpdate('RESTRICT')
-                .onDelete('RESTRICT'); // RESTRICT kullanıldıgında, ilgili satır silindiginde alt/üst satır silinmez
                 
         })
         .createTable("Tweets", function tweetsTable(table) {
@@ -114,6 +100,5 @@ exports.down = function (knex) {
         .dropTableIfExists("Mentions")
         .dropTableIfExists("Tweets")
         .dropTableIfExists("Users")
-        .dropTableIfExists("Roles");
 
 };
