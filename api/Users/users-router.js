@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
 const User = require('./users-model');
+
+//Tüm Kullanıcıları Getir
 router.get('/', async (req,res,next) => {
     try {
         const users= await User.getAll();
@@ -11,6 +13,8 @@ router.get('/', async (req,res,next) => {
     }
     
 })
+
+// İD'ye göre getir
 router.get('/:id', async (req,res,next) => {
  const userId = req.params.id;
     try {
@@ -25,6 +29,8 @@ router.get('/:id', async (req,res,next) => {
     res.status(500).json({message: 'Kullaniciyi getirirken hata oluştu.'})
     }
 })
+
+// KULLANICI SİLER
 router.delete('/:id',async (req,res) => {
     
     try {
@@ -41,22 +47,24 @@ router.delete('/:id',async (req,res) => {
     
     
 })
-router.put('/:id',async (req,res,next) => {
-    const {id} = req.params;
-    try {
+// router.put('/:id',async (req,res,next) => {
+//     const {id} = req.params;
+//     try {
        
-        const updated = await User.update(id) ; 
-        if (updated) {
-            res.json( { message: `User id ${id}, guncellendi.`})        
-            } else {
-            res.status(400).json ({message: `update error for id ${id}...` }) 
-            }
-            } catch (error) {
-            res.status(500).json({message: 'Kullanici guncellenirken hata oluştu(UPDATE_ERROR)'})
-            }
-})
+//         const updated = await User.update(id) ; 
+//         if (updated) {
+//             res.json( { message: `User id ${id}, guncellendi.`})        
+//             } else {
+//             res.status(400).json ({message: `update error for id ${id}...` }) 
+//             }
+//             } catch (error) {
+//             res.status(500).json({message: 'Kullanici guncellenirken hata oluştu(UPDATE_ERROR)'})
+//             }
+// })
 
-router.post("/", async (req, res, next) => {
+
+// USER KAYDI YAPAR
+router.post("/createuser", async (req, res, next) => {
     try {
       const { username, password, email } = req.body;
       if (!username) {
@@ -73,5 +81,6 @@ router.post("/", async (req, res, next) => {
     } catch (err) {
       next(err);
     }
+    //Create User çalışıyor
   });
 module.exports = router ;

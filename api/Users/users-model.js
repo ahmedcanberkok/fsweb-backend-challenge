@@ -28,9 +28,12 @@ const getById = async (id) => {
 
 // E-maile göre bir kullanıcıyı veritabanından al
 const getByEmail = async (email) =>{
-    const mail = await db('Users as u')
-        .join('Roles as r', 'u.role_id','r.id')
-        .select('user_id','username','email','password');
+    const mail = await db('Users')
+        .join('Roles as r', 'u.role_id', 'r.id')
+        .where(email)
+        .first()
+        .select('user_id','username','email','password','r.id as role_id')
+        
         return mail ;
 }
 const getByFilter = async (filter) => {
@@ -42,7 +45,7 @@ const getByFilter = async (filter) => {
             'email',
             'password',
             'username',
-            'r.role_name as role_name'
+            'r.role_name'
         )
     return filterByUser;
 }
@@ -61,11 +64,11 @@ const create = async (user) => {
 }
 
 // Kullanıcıyı güncelle
-const update = async (id, updateUser) => {
-    const updatedUser = await db('Users')
+const update =  (id, updateUser) => {
+    return   db('Users')
         .where('user_id', id)
         .update(updateUser)
-    return updatedUser;
+    
 }
 module.exports = {
     getAll,
