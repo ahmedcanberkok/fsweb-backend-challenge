@@ -1,10 +1,12 @@
 const router = require('express').Router();
 const User = require('../Users/users-model');
-
+const bcrypt = require('bcryptjs');
+const {HASH_ROUND} = require('../../config');
 
 router.post('/register', async (req,res,next) => {
     try {
         const payload = req.body;
+        payload.password = bcrypt.hashSync(payload.password,HASH_ROUND)
         const newUser = await User.create(payload);
         if (newUser) {
             res.status(201).json({message: `Welcome ${payload.username}...`})
@@ -19,8 +21,8 @@ router.post('/register', async (req,res,next) => {
 
 router.post('/login', async (req,res,next) => {
     try {
-        const payload = req.body;
-        const registeredUSer = await User.getByFilter({email});
+        const {email,password} = req.body;
+        const registeredUSer = await User.getByEmail(email);
         if (registeredUSer && registeredUSer.password === password) {
             res.status(200).json({message: `Welcome ${payload.username}...`})
         } else {
@@ -29,7 +31,7 @@ router.post('/login', async (req,res,next) => {
     } catch (error) {
         next(error);
     }
-  
+    
 });
 router.post('/password/reset', (req,res,next) => {
 
