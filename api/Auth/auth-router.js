@@ -2,10 +2,9 @@ const router = require('express').Router();
 const User = require('../Users/users-model');
 const bcrypt = require('bcryptjs');
 const {HASH_ROUND} = require('../../config');
-const {generateToken} = require('./auth-middleware');
+const {generateToken,payloadCheck,isEmailAvailable} = require('./auth-middleware');
 
-
-router.post('/register', async (req,res,next) => {
+router.post('/register',payloadCheck,isEmailAvailable, async (req,res,next) => {
     try {
         const payload = req.body;
         payload.password = bcrypt.hashSync(payload.password,Number(HASH_ROUND))

@@ -47,23 +47,7 @@ router.delete('/:id',async (req,res) => {
     
     
 })
-// router.put('/:id',async (req,res,next) => {
-//     const {id} = req.params;
-//     try {
-       
-//         const updated = await User.update(id) ; 
-//         if (updated) {
-//             res.json( { message: `User id ${id}, guncellendi.`})        
-//             } else {
-//             res.status(400).json ({message: `update error for id ${id}...` }) 
-//             }
-//             } catch (error) {
-//             res.status(500).json({message: 'Kullanici guncellenirken hata oluştu(UPDATE_ERROR)'})
-//             }
-// })
 
-
-// USER KAYDI YAPAR
 router.post("/createuser", async (req, res, next) => {
     try {
       const { username, password, email } = req.body;

@@ -37,12 +37,7 @@ const getByEmail = async (email) =>{
 const getByFilter = async (filter) => {
     const filterByUser = await db('Users as u')
         .where(filter)
-        .select(
-            'u.user_id',
-            'email',
-            'password',
-            'username',
-        )
+        .select("*")
     return filterByUser;
 }
 // Kullanıcı sil.

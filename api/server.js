@@ -5,9 +5,12 @@ require('dotenv').config();
 const helmet = require('helmet'); 
 const cors = require('cors');
 const morgan = require('morgan');
-const {resricted} = require('./Auth/auth-middleware');
+// const {restricted} = require('./Auth/auth-middleware');
 const userRouter = require('./Users/users-router');
 const authRouter = require('./Auth/auth-router');
+const tweetRouter =require('./Tweet/tweet-router')
+const mentionRouter = require('./Mention/mention-router')
+
 //GLOBAL MİDDLEWARE
 //3rd-party middleware
 
@@ -20,8 +23,10 @@ server.use(express.json());
 server.get ('/', (req,res) => {
     res.json({message: "Server up and running..."})
 })
-server.use('/api/users',resricted,userRouter);
+server.use('/api/users',userRouter);
 server.use('/api/auth',authRouter);
+server.use('/api/tweets',tweetRouter);
+server.use('/api/mentions',mentionRouter);
 //ERROR MİDDLEWARE
 
 server.use((err,req,res,next) => {
